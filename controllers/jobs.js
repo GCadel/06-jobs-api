@@ -12,7 +12,16 @@ const updateJob = async (req, res) => {
   const {
     user: { userId },
     params: { id: jobId },
+    body: { company, position },
   } = req;
+
+  if (company === "") {
+    throw new BadRequestError("Company required");
+  }
+
+  if (position === "") {
+    throw new BadRequestError("Position required");
+  }
 
   const job = await Job.findOneAndUpdate(
     {
