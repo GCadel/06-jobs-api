@@ -13,7 +13,9 @@ const updateJob = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
-  res.send("get jobs");
+  // Getting jobs attached to the user
+  const jobs = await Job.find({ createdBy: req.user.userId }).sort("createdAt");
+  res.status(StatusCodes.OK).json({ count: jobs.length, jobs });
 };
 
 const getJob = async (req, res) => {
