@@ -9,7 +9,25 @@ const createJob = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
-  res.send("update job");
+  const {
+    user: { userId },
+    params: { id: jobId },
+  } = req;
+
+  const job = await Job.findOneAndUpdate(
+    {
+      _id: jobId,
+      createdBy: userId,
+    },
+    req.body,
+    { runValidators: true, new: true },
+  );
+
+  if (!job) {
+    throw new NotFoundError("Invalid job ID");
+  }
+
+  res.status(StatusCodes.OK).json({ job });
 };
 
 const getAllJobs = async (req, res) => {
@@ -19,11 +37,39 @@ const getAllJobs = async (req, res) => {
 };
 
 const getJob = async (req, res) => {
-  res.send("get a job");
+  const {
+    user: { userId },
+    params: { id: jobId },
+  } = req;
+
+  const job = await Job.findOne({
+    _id: jobId,
+    createdBy: userId,
+  });
+
+  if (!job) {
+    throw new NotFoundError(`Invalid job ID`);
+  }
+
+  res.status(StatusCodes.OK).send({ job });
 };
 
 const deleteJob = async (req, res) => {
-  res.send("delete job");
+  const {
+    user: { userId },
+    params: { id: jobId },
+  } = req;
+
+  const job = await Job.findOneAndDelete({
+    _id: jobId,
+    createdBy: userId,
+  });
+
+  if (!job) {
+    throw new NotFoundError("Invalid job ID");
+  }
+
+  res.status(StatusCodes.ACCEPTED).send({ msg: "Job Posting Deleted" });
 };
 
 module.exports = { createJob, updateJob, deleteJob, getJob, getAllJobs };
