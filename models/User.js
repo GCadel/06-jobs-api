@@ -46,4 +46,9 @@ UserSchema.methods.createJWT = function () {
   );
 };
 
+UserSchema.methods.checkPassword = async function (password) {
+  const passIsCorrect = await bcrypt.compare(password, this.password);
+  return passIsCorrect;
+};
+
 module.exports = model("User", UserSchema);
