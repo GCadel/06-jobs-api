@@ -13,7 +13,6 @@ const JobSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["interview", "declined", "pending"],
-      required: [true, "Company Name Required"],
       default: "pending",
     },
     // Attaches the user to the job entry
