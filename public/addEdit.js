@@ -15,6 +15,10 @@ export const handleAddEdit = () => {
   addingJob = document.getElementById("adding-job");
   const editCancel = document.getElementById("edit-cancel");
 
+  editCancel.addEventListener("click", async (e) => {
+    showJobs();
+  });
+
   addEditDiv.addEventListener("click", async (e) => {
     if (inputEnabled && e.target.nodeName === "BUTTON") {
       if (e.target === addingJob) {
